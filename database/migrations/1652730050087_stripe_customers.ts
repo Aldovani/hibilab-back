@@ -14,6 +14,8 @@ export default class StripeCustomers extends BaseSchema {
         .inTable('users')
         .onDelete('CASCADE')
         .onUpdate('CASCADE')
+      table.enum('type', ['basic', 'premium', 'deluxe']).notNullable()
+      table.enum('status', ['active', 'inactive']).notNullable().defaultTo('inactive')
       table.timestamps()
     })
   }

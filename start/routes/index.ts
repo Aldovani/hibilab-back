@@ -22,6 +22,7 @@ import Route from '@ioc:Adonis/Core/Route'
 
 import './auth'
 import './user'
+import './signature'
 import './course'
 
 Route.get('/', async () => {

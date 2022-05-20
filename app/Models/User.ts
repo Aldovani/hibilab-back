@@ -1,7 +1,15 @@
 import { DateTime } from 'luxon'
 import Hash from '@ioc:Adonis/Core/Hash'
-import { column, beforeSave, BaseModel, hasMany, HasMany } from '@ioc:Adonis/Lucid/Orm'
-import { Course } from './index'
+import {
+  column,
+  beforeSave,
+  BaseModel,
+  hasMany,
+  HasMany,
+  hasOne,
+  HasOne,
+} from '@ioc:Adonis/Lucid/Orm'
+import { Course, StripeCustomers } from 'App/Models'
 
 export default class User extends BaseModel {
   @column({ isPrimary: true })
@@ -24,6 +32,9 @@ export default class User extends BaseModel {
 
   @hasMany(() => Course)
   public classes: HasMany<typeof Course>
+
+  @hasOne(() => StripeCustomers)
+  public stripeCustomers: HasOne<typeof StripeCustomers>
 
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime
