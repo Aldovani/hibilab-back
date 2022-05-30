@@ -8,7 +8,7 @@ export default class UpdateValidator {
     name: schema.string.optional({ trim: true }),
     email: schema.string.optional({ trim: true }, [
       rules.email(),
-      rules.exists({ table: 'user', column: 'email' }),
+      // rules.exists({ table: 'user', column: 'email' }),
     ]),
     password: schema.string.optional({ trim: true }),
   })

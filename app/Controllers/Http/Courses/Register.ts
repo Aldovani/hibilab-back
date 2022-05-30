@@ -3,17 +3,16 @@ import { StoreValidator, UpdateValidator } from 'App/Validators/Course/Register'
 import { Course } from 'App/Models'
 
 export default class CoursesController {
-  public async index({}: HttpContextContract) {
-    const courses = await Course.all()
+  public async index({ request }: HttpContextContract) {
+    const { page = 1 } = request.qs()
+    const courses = await (await Course.query().orderBy('id', 'asc').paginate(page, 6)).serialize()
 
     return courses
   }
 
   public async store({ request }: HttpContextContract) {
     const data = await request.validate(StoreValidator)
-
     const course = await Course.create(data)
-
     return course
   }
 
@@ -26,6 +25,7 @@ export default class CoursesController {
     const data = await request.validate(UpdateValidator)
     const course = await Course.findOrFail(params.id)
     course.merge(data)
+    await course.save()
     return course
   }
 

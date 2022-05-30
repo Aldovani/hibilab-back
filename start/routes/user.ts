@@ -1,5 +1,7 @@
 import Route from '@ioc:Adonis/Core/Route'
 
-Route.post('/user/register', 'Users/Register.store')
+Route.get('/user', 'Users/Main.show').middleware('auth')
 
-Route.put('/user/change', 'Users/Change.update').middleware('auth')
+Route.post('/user', 'Users/Main.store')
+
+Route.put('/user', 'Users/Main.update').middleware('auth')

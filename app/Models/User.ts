@@ -9,7 +9,7 @@ import {
   hasOne,
   HasOne,
 } from '@ioc:Adonis/Lucid/Orm'
-import { Course, StripeCustomers } from 'App/Models'
+import { Course, StripeCustomers, File } from 'App/Models'
 
 export default class User extends BaseModel {
   @column({ isPrimary: true })
@@ -31,10 +31,13 @@ export default class User extends BaseModel {
   public rememberMeToken?: string
 
   @hasMany(() => Course)
-  public classes: HasMany<typeof Course>
+  public courses: HasMany<typeof Course>
 
   @hasOne(() => StripeCustomers)
   public stripeCustomers: HasOne<typeof StripeCustomers>
+
+  @hasOne(() => File)
+  public avatar: HasOne<typeof File>
 
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime

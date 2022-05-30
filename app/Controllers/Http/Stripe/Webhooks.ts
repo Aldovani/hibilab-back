@@ -7,6 +7,7 @@ const relevantEvents = new Set([
   'checkout.session.completed',
   'checkout.subscription.updated',
   'checkout.subscription.deleted',
+  'customer.subscription.deleted',
 ])
 
 export default class WebhooksController {
@@ -32,10 +33,12 @@ export default class WebhooksController {
           case 'checkout.subscriptions.created':
           case 'checkout.subscriptions.deleted':
           case 'checkout.subscriptions.updated':
+          case 'customer.subscription.deleted':
+            console.log('aquiiiiiiiiiiiii poraaa')
             const subscription = event.data.object as Stripe.Subscription
             StripeCustomers.findBy('stripeId', subscription.customer)
             const subscriptionUser = await StripeCustomers.findBy('stripeId', subscription.customer)
-            subscriptionUser!.status = 'inactive'
+            subscriptionUser!.merge({ status: 'inactive' })
             await subscriptionUser!.save()
             break
 
