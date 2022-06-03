@@ -2,11 +2,13 @@ import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import { UpdateValidator } from 'App/Validators/User/Change'
 import { StoreValidator } from 'App/Validators/User/Register'
 import { User } from 'App/Models'
+
 export default class MainsController {
   public async show({ auth }: HttpContextContract) {
     const user = await User.query()
       .where('id', auth.user!.id)
       .preload('stripeCustomers')
+      .preload('avatar')
       .firstOrFail()
 
     return user

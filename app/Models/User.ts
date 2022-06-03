@@ -8,8 +8,10 @@ import {
   HasMany,
   hasOne,
   HasOne,
+  manyToMany,
+  ManyToMany,
 } from '@ioc:Adonis/Lucid/Orm'
-import { Course, StripeCustomers, File } from 'App/Models'
+import { Course, StripeCustomers, File, UserKey } from 'App/Models'
 
 export default class User extends BaseModel {
   @column({ isPrimary: true })
@@ -27,22 +29,37 @@ export default class User extends BaseModel {
   @column()
   public permission: 'admin' | 'student'
 
-  @column()
+  @column({ serializeAs: null })
   public rememberMeToken?: string
 
-  @hasMany(() => Course)
-  public courses: HasMany<typeof Course>
+  @hasMany(() => UserKey)
+  public keys: HasMany<typeof UserKey>
 
-  @hasOne(() => StripeCustomers)
+  @hasOne(() => StripeCustomers, { serializeAs: 'subscription' })
   public stripeCustomers: HasOne<typeof StripeCustomers>
 
-  @hasOne(() => File)
+  @hasOne(() => File, {
+    foreignKey: 'ownerId',
+    onQuery: (query) => {
+      query.where({ fileCategory: 'avatar' })
+    },
+  })
   public avatar: HasOne<typeof File>
 
-  @column.dateTime({ autoCreate: true })
+  @manyToMany(() => Course, {
+    serializeAs: 'Courses',
+    pivotTable: 'user_courses',
+    localKey: 'id',
+    pivotForeignKey: 'user_id',
+    relatedKey: 'id',
+    pivotRelatedForeignKey: 'course_id',
+  })
+  public courseSubscription: ManyToMany<typeof Course>
+
+  @column.dateTime({ autoCreate: true, serializeAs: null })
   public createdAt: DateTime
 
-  @column.dateTime({ autoCreate: true, autoUpdate: true })
+  @column.dateTime({ autoCreate: true, autoUpdate: true, serializeAs: null })
   public updatedAt: DateTime
 
   @beforeSave()

@@ -24,6 +24,9 @@ import './auth'
 import './user'
 import './signature'
 import './course'
+import './classes'
+import './uploads'
+import './inscribe'
 
 Route.get('/', async () => {
   return { hello: 'world' }

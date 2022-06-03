@@ -3,12 +3,12 @@ import { Course } from 'App/Models'
 
 export default class SearchController {
   public async index({ request }: HttpContextContract) {
-    const { name } = request.qs()
+    const { name, page = 1 } = request.qs()
 
     const courses = await Course.query()
       .where('name', 'like', `%${name}%`)
       .orWhere('teacher', 'like', `%${name}%`)
-      .paginate(1, 10)
+      .paginate(page, 6)
 
     return courses
   }

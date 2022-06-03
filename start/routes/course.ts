@@ -8,3 +8,7 @@ Route.get('/course/:id', 'Courses/Register.show')
 Route.delete('/course/:id', 'Courses/Register.destroy').middleware('acl:admin')
 Route.post('/course', 'Courses/Register.store').middleware('acl:admin')
 Route.put('/course/:id', 'Courses/Register.update').middleware('acl:admin')
+
+Route.put('/course/thumbnail/:id', 'Courses/Thumbnail.update').middleware('acl:admin')
+
+Route.delete('/course/thumbnail/:id', 'Courses/Thumbnail.destroy').middleware('acl:admin')

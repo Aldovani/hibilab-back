@@ -7,9 +7,8 @@ export default class Classes extends BaseSchema {
     this.schema.createTable(this.tableName, (table) => {
       table.increments('id').primary()
       table.string('name', 255).notNullable()
-      table.string('file_name').notNullable()
       table
-        .integer('couses_id')
+        .integer('course_id')
         .unsigned()
         .references('id')
         .inTable('courses')

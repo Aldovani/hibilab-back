@@ -1,6 +1,14 @@
 import { DateTime } from 'luxon'
-import { BaseModel, column, hasMany, HasMany } from '@ioc:Adonis/Lucid/Orm'
-import { Classe } from './index'
+import {
+  BaseModel,
+  column,
+  hasMany,
+  HasMany,
+  HasOne,
+  hasOne,
+  computed,
+} from '@ioc:Adonis/Lucid/Orm'
+import { Classe, File } from './index'
 import { Difficulty } from 'App/utils'
 
 export default class Course extends BaseModel {
@@ -25,9 +33,22 @@ export default class Course extends BaseModel {
   @hasMany(() => Classe)
   public classes: HasMany<typeof Classe>
 
-  @column.dateTime({ autoCreate: true })
+  @hasOne(() => File, {
+    foreignKey: 'ownerId',
+    onQuery: (query) => {
+      query.where({ fileCategory: 'thumbnail_course' })
+    },
+  })
+  public thumbnailCourse: HasOne<typeof File>
+
+  @column.dateTime({ autoCreate: true, serializeAs: null })
   public createdAt: DateTime
 
-  @column.dateTime({ autoCreate: true, autoUpdate: true })
+  @column.dateTime({ autoCreate: true, autoUpdate: true, serializeAs: null })
   public updatedAt: DateTime
+
+  @computed()
+  public get classesCount() {
+    return this.classes.length || 0
+  }
 }
