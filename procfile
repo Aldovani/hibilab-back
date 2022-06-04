@@ -1,1 +1,4 @@
 web:ENV_SILENT=true node ./build/server.js
+release: cd build
+web:yarn install --production
+web: node server.js
