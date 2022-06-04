@@ -2,6 +2,7 @@ import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import { stripe } from 'App/services/stripe'
 import { StripeCustomers } from 'App/Models'
 import Stripe from 'stripe'
+import Env from '@ioc:Adonis/Core/Env'
 
 const relevantEvents = new Set([
   'checkout.session.completed',
@@ -19,7 +20,7 @@ export default class WebhooksController {
       event = stripe.webhooks.constructEvent(
         request.raw()!,
         stripeSignature!,
-        'whsec_5c974456297478082ce3981c3536a78f4382b696eafd33e34fa0a98a4b27dd7d'
+        Env.get('STRIPE_SIGNATURE_SECRET')
       )
     } catch (err) {
       console.log(`⚠️  Webhook signature verification failed.`, err.message)
