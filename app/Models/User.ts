@@ -12,6 +12,7 @@ import {
   ManyToMany,
 } from '@ioc:Adonis/Lucid/Orm'
 import { Course, StripeCustomers, File, UserKey } from 'App/Models'
+import Classe from './Classe'
 
 export default class User extends BaseModel {
   @column({ isPrimary: true })

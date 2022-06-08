@@ -7,7 +7,11 @@ import fs from 'fs'
 export default class CoursesController {
   public async index({ request }: HttpContextContract) {
     const { page = 1 } = request.qs()
-    const courses = await Course.query().orderBy('id', 'asc').paginate(page, 6)
+    const courses = await Course.query()
+      .orderBy('id', 'asc')
+      .preload('thumbnailCourse')
+      .paginate(page, 6)
+
     return courses
   }
 
@@ -20,9 +24,9 @@ export default class CoursesController {
   public async show({ params }: HttpContextContract) {
     const course = await Course.findOrFail(params.id)
     await course.related('classes').query().preload('courseVideo')
-    // await course.load('classes', (query) => {
-    //   query.preload('courseVideo')
-    // })
+    await course.load('classes', (classes) => {
+      classes.preload('courseVideo')
+    })
     await course.load('thumbnailCourse')
     return course
   }
@@ -37,10 +41,15 @@ export default class CoursesController {
 
   public async destroy({ params }: HttpContextContract) {
     const course = await Course.findOrFail(params.id)
-    const videos = await course.related('classes').query().preload('courseVideo')
-    for (const video of videos) {
-      await video.courseVideo.delete()
-      fs.unlinkSync(Application.tmpPath(`uploads`, video.courseVideo.fileName))
+    const aulas = await course.related('classes').query().preload('courseVideo')
+    if (aulas.length > 0) {
+      for (const aula of aulas) {
+        if (aula.courseVideo) {
+          await aula.courseVideo.delete()
+          fs.unlinkSync(Application.tmpPath(`uploads`, aula.courseVideo.fileName))
+        }
+        await aula.delete()
+      }
     }
     const thumbnail = await course.related('thumbnailCourse').query().first()
     if (thumbnail) {
@@ -48,5 +57,6 @@ export default class CoursesController {
       fs.unlinkSync(Application.tmpPath(`uploads`, thumbnail.fileName))
     }
     await course.delete()
+    return aulas
   }
 }

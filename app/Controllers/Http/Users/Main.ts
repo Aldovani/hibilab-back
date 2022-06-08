@@ -24,6 +24,7 @@ export default class MainsController {
   public async update({ request, auth }: HttpContextContract) {
     const data = await request.validate(UpdateValidator)
     const user = await auth.user!.merge(data).save()
+    await user.load('avatar')
 
     return user
   }

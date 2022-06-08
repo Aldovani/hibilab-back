@@ -6,7 +6,7 @@ import { StripeCustomers } from 'App/Models'
 const productsId = [
   'price_1L4vkRGOxOu9eoh9WzWVstCG', // 1 month
   'price_1L4vlnGOxOu9eoh9kuIXzl7p', //3 month
-  'price_1L4vlBGOxOu9eoh9Dus6IBlv1', // 1 year
+  'price_1L4vlBGOxOu9eoh9Dus6IBlv', // 1 year
 ]
 
 export default class MainController {

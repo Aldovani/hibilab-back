@@ -5,7 +5,7 @@ export default class UpdateValidator {
   constructor(protected ctx: HttpContextContract) {}
 
   public schema = schema.create({
-    password: schema.string({ trim: true }, [rules.confirmed('password_confirmation')]),
+    password: schema.string({ trim: true }, [rules.confirmed('passwordConfirmation')]),
     key: schema.string({ trim: true }, [rules.exists({ table: 'user_keys', column: 'key' })]),
   })
 

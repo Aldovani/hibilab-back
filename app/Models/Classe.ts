@@ -30,16 +30,6 @@ export default class Classe extends BaseModel {
   })
   public courseVideo: HasOne<typeof File>
 
-  @manyToMany(() => Classe, {
-    pivotTable: 'classes_watches',
-    localKey: 'id',
-    pivotForeignKey: 'class_id',
-    relatedKey: 'id',
-    pivotRelatedForeignKey: 'user_id',
-    serializeAs: 'watches',
-  })
-  public classesWatches: ManyToMany<typeof Classe>
-
   @belongsTo(() => Course)
   public course: BelongsTo<typeof Course>
 

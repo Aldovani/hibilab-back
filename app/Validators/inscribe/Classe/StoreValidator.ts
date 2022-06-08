@@ -6,6 +6,7 @@ export default class StoreValidator {
 
   public schema = schema.create({
     classeId: schema.number([rules.exists({ table: 'classes', column: 'id' })]),
+    courseId: schema.number([rules.exists({ table: 'courses', column: 'id' })]),
   })
 
   /**

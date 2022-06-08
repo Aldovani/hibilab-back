@@ -6,8 +6,7 @@ export default class UpdateValidator {
 
   public schema = schema.create({
     file: schema.file({
-      extnames: ['mp4'],
-      size: '500mb',
+      // size: '2gb',
     }),
   })
 

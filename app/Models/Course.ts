@@ -7,6 +7,8 @@ import {
   HasOne,
   hasOne,
   computed,
+  manyToMany,
+  ManyToMany,
 } from '@ioc:Adonis/Lucid/Orm'
 import { Classe, File } from './index'
 import { Difficulty } from 'App/utils'
@@ -34,6 +36,7 @@ export default class Course extends BaseModel {
   public classes: HasMany<typeof Classe>
 
   @hasOne(() => File, {
+    serializeAs: 'thumbnail',
     foreignKey: 'ownerId',
     onQuery: (query) => {
       query.where({ fileCategory: 'thumbnail_course' })
@@ -46,9 +49,4 @@ export default class Course extends BaseModel {
 
   @column.dateTime({ autoCreate: true, autoUpdate: true, serializeAs: null })
   public updatedAt: DateTime
-
-  @computed()
-  public get classesCount() {
-    return this.classes.length || 0
-  }
 }
