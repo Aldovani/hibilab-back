@@ -8,7 +8,7 @@ export default class SearchController {
     const courses = await Course.query()
       .where('name', 'like', `%${name}%`)
       .orWhere('teacher', 'like', `%${name}%`)
-      .paginate(page, 6)
+      .paginate(page, 18)
 
     return courses
   }
